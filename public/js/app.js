@@ -26,21 +26,27 @@ applyPhoneMask('client-phone');
 applyPhoneMask('vas-phone');
 
 // === NAVEGACAO ===
-const navItems = document.querySelectorAll('.nav-item');
-const pages = document.querySelectorAll('.page');
+function switchPage(page) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-navItems.forEach(item => {
-  item.addEventListener('click', () => {
-    const page = item.dataset.page;
-    navItems.forEach(n => n.classList.remove('active'));
-    pages.forEach(p => p.classList.remove('active'));
-    item.classList.add('active');
-    document.getElementById('page-' + page).classList.add('active');
+  const btn = document.querySelector(`.nav-item[data-page="${page}"]`);
+  const target = document.getElementById('page-' + page);
+  if (btn) btn.classList.add('active');
+  if (target) target.classList.add('active');
 
-    if (page === 'validade') loadValidade();
-    if (page === 'precificacao') loadPrecos();
-    if (page === 'fiado') loadFiado();
-    if (page === 'vasilhame') loadVasilhame();
+  if (page === 'validade') loadValidade();
+  if (page === 'precificacao') loadPrecos();
+  if (page === 'fiado') loadFiado();
+  if (page === 'vasilhame') loadVasilhame();
+}
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const page = item.getAttribute('data-page');
+    if (page) switchPage(page);
   });
 });
 
