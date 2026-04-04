@@ -462,6 +462,17 @@ document.getElementById('filter-vasilhame-status')?.addEventListener('change', r
 document.getElementById('filter-vasilhame-mes')?.addEventListener('change', renderVasilhame);
 document.getElementById('filter-vasilhame-ano')?.addEventListener('change', renderVasilhame);
 
+// tipo muda automaticamente com base na marca
+document.getElementById('vas-brand')?.addEventListener('change', (e) => {
+  const brand = e.target.value;
+  const typeSelect = document.getElementById('vas-type');
+  if (brand === 'Refrigerante 2L') {
+    typeSelect.innerHTML = '<option value="Garrafa 2L">Garrafa 2L</option>';
+  } else {
+    typeSelect.innerHTML = '<option value="Caixa c/ 24">Caixa c/ 24</option><option value="Avulsa">Avulsa</option>';
+  }
+});
+
 document.getElementById('form-vasilhame').addEventListener('submit', async (e) => {
   e.preventDefault();
   const dateVal = document.getElementById('vas-date').value;
