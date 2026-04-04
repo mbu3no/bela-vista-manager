@@ -82,15 +82,16 @@ Não é necessário instalar nada. Basta abrir o link no navegador.
 
 ```bash
 git clone https://github.com/mbu3no/bela-vista-manager.git
-cd bela-vista-manager
+cd bela-vista-manager/public
 
-# abrir no navegador (qualquer uma das opções)
-start public/index.html        # Windows
-open public/index.html         # macOS
-xdg-open public/index.html     # Linux
+# usando Python
+python -m http.server 3000
+
+# ou usando Node.js
+npx serve .
 ```
 
-Não precisa de servidor nem dependências — o sistema conecta direto no Supabase pelo navegador.
+Acesse `http://localhost:3000` no navegador.
 
 ---
 
