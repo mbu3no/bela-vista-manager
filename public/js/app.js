@@ -1,6 +1,30 @@
 // === SUPABASE CLIENT ===
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// === MASCARA DE TELEFONE ===
+function maskPhone(value) {
+  const nums = value.replace(/\D/g, '').slice(0, 11);
+  if (nums.length <= 2) return `(${nums}`;
+  if (nums.length <= 6) return `(${nums.slice(0,2)})${nums.slice(2)}`;
+  if (nums.length <= 10) return `(${nums.slice(0,2)})${nums.slice(2,6)}-${nums.slice(6)}`;
+  return `(${nums.slice(0,2)})${nums.slice(2,7)}-${nums.slice(7)}`;
+}
+
+function applyPhoneMask(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.addEventListener('input', () => {
+    const pos = input.selectionStart;
+    const old = input.value.length;
+    input.value = maskPhone(input.value);
+    const diff = input.value.length - old;
+    input.setSelectionRange(pos + diff, pos + diff);
+  });
+}
+
+applyPhoneMask('client-phone');
+applyPhoneMask('vas-phone');
+
 // === NAVEGACAO ===
 const navItems = document.querySelectorAll('.nav-item');
 const pages = document.querySelectorAll('.page');
@@ -258,7 +282,7 @@ function renderClients() {
     const debtClass = c.total_devido > 0 ? 'has-debt' : 'no-debt';
     return `<div class="client-card" onclick="openClient(${c.id}, '${c.name.replace(/'/g, "\\'")}')">
       <div class="client-name">${c.name}</div>
-      <div class="client-phone">${c.phone || 'Sem telefone'}</div>
+      <div class="client-phone">${c.phone ? maskPhone(c.phone) : 'Sem telefone'}</div>
       <div class="client-debt ${debtClass}">${formatMoney(c.total_devido)}</div>
       <div class="client-debt-label">Deve atualmente</div>
       <div class="client-actions">
@@ -442,8 +466,9 @@ function renderVasilhame() {
     const actions = v.returned
       ? ''
       : `<button class="btn btn-success btn-sm" onclick="devolverVasilhame(${v.id})">Devolver</button>`;
+    const phone = v.customer_phone ? `<div style="font-size:0.75rem;color:var(--text-soft)">${v.customer_phone}</div>` : '';
     return `<tr>
-      <td><strong>${v.customer_name}</strong></td>
+      <td><strong>${v.customer_name}</strong>${phone}</td>
       <td>${v.brand}</td>
       <td>${v.type}</td>
       <td>${v.quantity}</td>
