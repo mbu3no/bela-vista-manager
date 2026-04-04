@@ -529,5 +529,16 @@ async function deleteVasilhame(id) {
   loadVasilhame();
 }
 
+// === VASILHAME: AUTO TIPO ===
+document.getElementById('vas-brand')?.addEventListener('change', (e) => {
+  const typeSelect = document.getElementById('vas-type');
+  if (!typeSelect) return;
+  if (e.target.value === 'Refri 2L') {
+    typeSelect.value = 'Garrafa';
+  } else if (typeSelect.value === 'Garrafa') {
+    typeSelect.value = 'Caixa c/ 24';
+  }
+});
+
 // === INIT ===
 loadValidade();
