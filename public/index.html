@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bela Vista Manager</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <img src="/logo.png" alt="Mini Mercado Bela Vista" class="sidebar-logo">
+    <div class="sidebar-sub">Sistema de Gestão</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-page="validade">
+      <span class="nav-icon">&#128197;</span> Validade
+    </button>
+    <button class="nav-item" data-page="precificacao">
+      <span class="nav-icon">&#128178;</span> Precificação
+    </button>
+    <button class="nav-item" data-page="fiado">
+      <span class="nav-icon">&#128221;</span> Fiado
+    </button>
+    <button class="nav-item" data-page="vasilhame">
+      <span class="nav-icon">&#127866;</span> Vasilhame
+    </button>
+  </nav>
+
+  <div class="sidebar-footer"></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- === VALIDADE === -->
+  <div class="page active" id="page-validade">
+    <div class="page-header">
+      <h1 class="page-title">Controle de Validade</h1>
+      <p class="page-desc">Cadastre produtos e acompanhe as datas de vencimento.</p>
+    </div>
+
+    <div class="stats-grid" id="validade-stats"></div>
+
+    <div class="form-card">
+      <div class="form-title">Novo Produto</div>
+      <form id="form-produto" class="form-row">
+        <div class="form-group">
+          <label>Produto</label>
+          <input type="text" id="prod-name" placeholder="Ex: Leite Integral" required>
+        </div>
+        <div class="form-group">
+          <label>Validade</label>
+          <input type="date" id="prod-expiry" required>
+        </div>
+        <div class="form-group" style="max-width:80px">
+          <label>Qtd</label>
+          <input type="number" id="prod-qty" value="1" min="1">
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+      </form>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <span class="table-title">Produtos Cadastrados</span>
+        <div class="table-filters">
+          <input type="text" id="search-validade" class="search-input" placeholder="Buscar produto...">
+          <select id="filter-validade-status" class="filter-select">
+            <option value="">Todos</option>
+            <option value="ok">Em dia</option>
+            <option value="alerta">Alerta</option>
+            <option value="vencido">Vencidos</option>
+          </select>
+          <select id="filter-validade-mes" class="filter-select">
+            <option value="">Todos os meses</option>
+            <option value="01">Jan</option><option value="02">Fev</option>
+            <option value="03">Mar</option><option value="04">Abr</option>
+            <option value="05">Mai</option><option value="06">Jun</option>
+            <option value="07">Jul</option><option value="08">Ago</option>
+            <option value="09">Set</option><option value="10">Out</option>
+            <option value="11">Nov</option><option value="12">Dez</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Validade</th>
+            <th>Qtd</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="validade-table"></tbody>
+      </table>
+      <div class="empty" id="validade-empty" style="display:none">
+        <div class="empty-icon">&#128230;</div>
+        <div class="empty-text">Nenhum produto cadastrado ainda.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === PRECIFICAÇÃO === -->
+  <div class="page" id="page-precificacao">
+    <div class="page-header">
+      <h1 class="page-title">Calculadora de Preço</h1>
+      <p class="page-desc">Calcule o preço de venda com base no custo e na margem desejada.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title">Calcular Preço</div>
+      <form id="form-preco" class="form-row">
+        <div class="form-group">
+          <label>Produto</label>
+          <input type="text" id="price-name" placeholder="Ex: Arroz 5kg" required>
+        </div>
+        <div class="form-group">
+          <label>Custo (R$)</label>
+          <input type="number" id="price-cost" step="0.01" min="0" placeholder="0,00" required>
+        </div>
+        <div class="form-group">
+          <label>Margem (%)</label>
+          <input type="number" id="price-markup" step="0.1" min="0" placeholder="30" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+      </form>
+
+      <div class="price-result" id="price-result">
+        <div class="price-label">Preço de Venda</div>
+        <div class="price-value" id="price-sell">R$ 0,00</div>
+        <div class="price-details">
+          <div class="price-detail">
+            <div class="price-detail-value" id="price-profit">R$ 0,00</div>
+            <div class="price-detail-label">Lucro por unidade</div>
+          </div>
+          <div class="price-detail">
+            <div class="price-detail-value" id="price-margin">0%</div>
+            <div class="price-detail-label">Margem</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <span class="table-title">Histórico de Cálculos</span>
+        <div class="table-filters">
+          <input type="text" id="search-preco" class="search-input" placeholder="Buscar produto...">
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Custo</th>
+            <th>Margem</th>
+            <th>Preço Venda</th>
+            <th>Lucro</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="preco-table"></tbody>
+      </table>
+      <div class="empty" id="preco-empty" style="display:none">
+        <div class="empty-icon">&#128200;</div>
+        <div class="empty-text">Nenhum cálculo salvo ainda.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === FIADO === -->
+  <div class="page" id="page-fiado">
+    <div class="page-header">
+      <h1 class="page-title">Controle de Fiado</h1>
+      <p class="page-desc">Gerencie os clientes e as dívidas pendentes.</p>
+    </div>
+
+    <div class="stats-grid" id="fiado-stats"></div>
+
+    <div class="form-card">
+      <div class="form-title">Novo Cliente</div>
+      <form id="form-cliente" class="form-row">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="client-name" placeholder="Ex: Seu João" required>
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="client-phone" placeholder="(11) 99999-9999">
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+      </form>
+    </div>
+
+    <div class="table-filters" style="margin-bottom:1rem">
+      <input type="text" id="search-fiado" class="search-input" placeholder="Buscar cliente...">
+      <select id="filter-fiado-mes" class="filter-select">
+        <option value="">Todos os meses</option>
+        <option value="01">Janeiro</option>
+        <option value="02">Fevereiro</option>
+        <option value="03">Março</option>
+        <option value="04">Abril</option>
+        <option value="05">Maio</option>
+        <option value="06">Junho</option>
+        <option value="07">Julho</option>
+        <option value="08">Agosto</option>
+        <option value="09">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+      </select>
+      <select id="filter-fiado-ano" class="filter-select">
+        <option value="">Todos os anos</option>
+      </select>
+    </div>
+
+    <div class="clients-grid" id="clients-grid"></div>
+    <div class="empty" id="fiado-empty" style="display:none">
+      <div class="empty-icon">&#128100;</div>
+      <div class="empty-text">Nenhum cliente cadastrado ainda.</div>
+    </div>
+  </div>
+
+  <!-- === VASILHAME === -->
+  <div class="page" id="page-vasilhame">
+    <div class="page-header">
+      <h1 class="page-title">Controle de Vasilhame</h1>
+      <p class="page-desc">Gerencie os empréstimos de cascos e caixas de cerveja.</p>
+    </div>
+
+    <div class="stats-grid" id="vasilhame-stats"></div>
+
+    <div class="form-card">
+      <div class="form-title">Novo Empréstimo</div>
+      <form id="form-vasilhame" class="form-row">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" id="vas-name" placeholder="Nome do cliente" required>
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="vas-phone" placeholder="(11) 99999-9999">
+        </div>
+        <div class="form-group">
+          <label>Marca</label>
+          <select id="vas-brand" required>
+            <option value="Original">Original</option>
+            <option value="Brahma">Brahma</option>
+            <option value="Bohemia">Bohemia</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="vas-type">
+            <option value="Caixa c/ 24">Caixa c/ 24</option>
+            <option value="Avulsa">Avulsa</option>
+          </select>
+        </div>
+        <div class="form-group" style="max-width:80px">
+          <label>Qtd</label>
+          <input type="number" id="vas-qty" value="1" min="1">
+        </div>
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date" id="vas-date">
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+      </form>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <span class="table-title">Empréstimos Registrados</span>
+        <div class="table-filters">
+          <input type="text" id="search-vasilhame" class="search-input" placeholder="Buscar cliente...">
+          <select id="filter-vasilhame-status" class="filter-select">
+            <option value="">Todos</option>
+            <option value="emprestado">Emprestados</option>
+            <option value="devolvido">Devolvidos</option>
+          </select>
+          <select id="filter-vasilhame-mes" class="filter-select">
+            <option value="">Todos os meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+          <select id="filter-vasilhame-ano" class="filter-select">
+            <option value="">Todos os anos</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Marca</th>
+            <th>Tipo</th>
+            <th>Qtd</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="vasilhame-table"></tbody>
+      </table>
+      <div class="empty" id="vasilhame-empty" style="display:none">
+        <div class="empty-icon">&#127866;</div>
+        <div class="empty-text">Nenhum empréstimo registrado ainda.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL DE DÍVIDAS -->
+<div class="modal-overlay" id="modal-dividas">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-client-name">Cliente</span>
+      <button class="modal-close" id="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-divida" class="form-row" style="margin-bottom:1.5rem">
+        <div class="form-group">
+          <label>Descrição</label>
+          <input type="text" id="debt-desc" placeholder="Ex: Compras do dia" required>
+        </div>
+        <div class="form-group" style="max-width:130px">
+          <label>Valor (R$)</label>
+          <input type="number" id="debt-amount" step="0.01" min="0.01" placeholder="0,00" required>
+        </div>
+        <div class="form-group" style="max-width:150px">
+          <label>Data</label>
+          <input type="date" id="debt-date">
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="dividas-table"></tbody>
+      </table>
+      <div class="empty" id="dividas-empty" style="display:none">
+        <div class="empty-icon">&#9989;</div>
+        <div class="empty-text">Nenhuma dívida registrada.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/js/supabase-config.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>
