@@ -96,7 +96,7 @@ Acesse `http://localhost:3000` no navegador.
 O sistema é responsivo e funciona em:
 - Desktop (sidebar lateral com abas)
 - Tablet (layout adaptado)
-- Celular (sidebar vira barra superior com scroll horizontal)
+- Celular (navegação fixa no rodapé com 4 abas visíveis + logo no topo)
 
 ---
 
