@@ -466,7 +466,7 @@ document.getElementById('filter-vasilhame-ano')?.addEventListener('change', rend
 document.getElementById('vas-brand')?.addEventListener('change', (e) => {
   const brand = e.target.value;
   const typeSelect = document.getElementById('vas-type');
-  if (brand === 'Refrigerante 2L') {
+  if (brand === 'Refri 2L') {
     typeSelect.innerHTML = '<option value="Garrafa 2L">Garrafa 2L</option>';
   } else {
     typeSelect.innerHTML = '<option value="Caixa c/ 24">Caixa c/ 24</option><option value="Avulsa">Avulsa</option>';
