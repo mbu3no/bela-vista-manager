@@ -29,8 +29,11 @@ Sistema de gestão para o Mini Mercado Bela Vista. Controle de validade de produ
 - Modal com histórico completo por cliente
 
 ### Controle de Vasilhame
-- Registro de empréstimos de cascos de cerveja (Original, Brahma, Bohemia)
-- Tipos: Caixa c/ 24 ou Avulsa
+- Registro de empréstimos de cascos de cerveja e refrigerante retornável
+- Cerveja Litrinho: Original, Brahma, Bohemia
+- Cerveja 600ml: Original, Brahma, Bohemia
+- Refrigerante retornável 2L
+- Tipo muda automaticamente conforme a marca selecionada (Caixa c/ 24, Avulsa ou Garrafa 2L)
 - Controle de devolução com data
 - Resumo: emprestados, devolvidos e clientes com casco pendente
 - Filtro por cliente, status, mês e ano
