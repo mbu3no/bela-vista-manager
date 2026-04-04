@@ -231,7 +231,7 @@
   <div class="page" id="page-vasilhame">
     <div class="page-header">
       <h1 class="page-title">Controle de Vasilhame</h1>
-      <p class="page-desc">Gerencie os empréstimos de cascos e caixas de cerveja.</p>
+      <p class="page-desc">Gerencie os empréstimos de cascos de cerveja e refrigerante retornável.</p>
     </div>
 
     <div class="stats-grid" id="vasilhame-stats"></div>
@@ -250,9 +250,18 @@
         <div class="form-group">
           <label>Marca</label>
           <select id="vas-brand" required>
-            <option value="Original">Original</option>
-            <option value="Brahma">Brahma</option>
-            <option value="Bohemia">Bohemia</option>
+            <optgroup label="Cerveja 600ml">
+              <option value="Original 600ml">Original</option>
+              <option value="Brahma 600ml">Brahma</option>
+              <option value="Bohemia 600ml">Bohemia</option>
+            </optgroup>
+            <optgroup label="Refrigerante 2L">
+              <option value="Coca-Cola 2L">Coca-Cola</option>
+              <option value="Guaraná 2L">Guaraná</option>
+              <option value="Fanta 2L">Fanta</option>
+              <option value="Sprite 2L">Sprite</option>
+              <option value="Outro Refri 2L">Outro</option>
+            </optgroup>
           </select>
         </div>
         <div class="form-group">
