@@ -70,9 +70,13 @@ vercel.json            # Configuração de deploy na Vercel
 
 ---
 
-## Como Rodar Localmente
+## Como Acessar
 
-Basta abrir o arquivo `public/index.html` no navegador — o sistema conecta direto no Supabase, sem precisar de servidor local.
+O sistema está hospedado na Vercel e pode ser acessado de qualquer dispositivo pelo link:
+
+**[bela-vista-manager.vercel.app](https://bela-vista-manager.vercel.app/)**
+
+Não é necessário instalar nada. Basta abrir o link no navegador.
 
 ---
 
