@@ -636,7 +636,9 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-  body { flex-direction: column; }
+  body {
+    flex-direction: column;
+  }
 
   .sidebar {
     width: 100%;
@@ -644,9 +646,11 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
     top: 0;
     flex-direction: column;
     height: auto;
+    bottom: auto;
     border-right: none;
     border-bottom: 1px solid var(--border-sidebar);
     z-index: 100;
+    background: var(--bg-sidebar);
   }
 
   .sidebar-header {
@@ -654,28 +658,35 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
   }
 
   .sidebar-logo {
-    max-width: 100px;
+    max-width: 90px;
     margin-bottom: 0;
+    border-radius: 8px;
+    padding: 4px;
   }
 
   .sidebar-sub { display: none; }
 
   .sidebar-nav {
     flex-direction: row;
-    padding: 0.5rem 0.75rem;
+    padding: 0 0.5rem 0.5rem;
     overflow-x: auto;
-    gap: 4px;
+    gap: 6px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
+  .sidebar-nav::-webkit-scrollbar { display: none; }
+
   .nav-item {
-    padding: 0.6rem 0.9rem;
+    padding: 0.55rem 0.85rem;
     font-size: 0.82rem;
     flex-shrink: 0;
+    border-radius: 8px;
+    gap: 6px;
   }
 
   .nav-icon { font-size: 1rem; width: 18px; }
@@ -685,8 +696,10 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
   .main {
     margin-left: 0;
     padding: 1.25rem 1rem;
+    max-width: 100%;
   }
 
+  .page-header { margin-bottom: 1.25rem; }
   .page-title { font-size: 1.3rem; }
   .page-desc { font-size: 0.82rem; }
 
