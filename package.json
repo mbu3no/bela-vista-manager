@@ -1,0 +1,13 @@
+{
+  "name": "bela-vista-manager",
+  "version": "1.0.0",
+  "description": "Sistema de gestão para o Mini Mercado Bela Vista",
+  "scripts": {
+    "dev": "npx serve public -l 3000",
+    "start": "npx serve public -l 3000"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.6"
+  }
+}

@@ -82,13 +82,9 @@ Não é necessário instalar nada. Basta abrir o link no navegador.
 
 ```bash
 git clone https://github.com/mbu3no/bela-vista-manager.git
-cd bela-vista-manager/public
-
-# usando Python
-python -m http.server 3000
-
-# ou usando Node.js
-npx serve .
+cd bela-vista-manager
+npm install
+npm run dev
 ```
 
 Acesse `http://localhost:3000` no navegador.
