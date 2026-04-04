@@ -78,6 +78,20 @@ O sistema está hospedado na Vercel e pode ser acessado de qualquer dispositivo 
 
 Não é necessário instalar nada. Basta abrir o link no navegador.
 
+### Rodar Localmente
+
+```bash
+git clone https://github.com/mbu3no/bela-vista-manager.git
+cd bela-vista-manager
+
+# abrir no navegador (qualquer uma das opções)
+start public/index.html        # Windows
+open public/index.html         # macOS
+xdg-open public/index.html     # Linux
+```
+
+Não precisa de servidor nem dependências — o sistema conecta direto no Supabase pelo navegador.
+
 ---
 
 ## Responsividade
