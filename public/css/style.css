@@ -634,6 +634,24 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
 .page { display: none; }
 .page.active { display: block; animation: fadeUp 0.3s ease; }
 
+/* ========== MOBILE HEADER ========== */
+.mobile-header {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 0 0.5rem;
+  }
+
+  .mobile-logo {
+    max-width: 140px;
+    object-fit: contain;
+  }
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   body {
