@@ -530,15 +530,21 @@ async function deleteVasilhame(id) {
 }
 
 // === VASILHAME: AUTO TIPO ===
-document.getElementById('vas-brand')?.addEventListener('change', (e) => {
-  const typeSelect = document.getElementById('vas-type');
-  if (!typeSelect) return;
-  if (e.target.value === 'Refri 2L') {
-    typeSelect.value = 'Garrafa';
-  } else if (typeSelect.value === 'Garrafa') {
-    typeSelect.value = 'Caixa c/ 24';
-  }
-});
+const vasBrand = document.getElementById('vas-brand');
+const vasType = document.getElementById('vas-type');
+if (vasBrand && vasType) {
+  vasBrand.addEventListener('change', () => {
+    if (vasBrand.value === 'Refri 2L') {
+      vasType.value = 'Garrafa';
+      vasType.disabled = true;
+    } else {
+      vasType.disabled = false;
+      if (vasType.value === 'Garrafa') {
+        vasType.value = 'Caixa c/ 24';
+      }
+    }
+  });
+}
 
 // === INIT ===
 loadValidade();
