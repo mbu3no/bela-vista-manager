@@ -535,13 +535,11 @@ const vasType = document.getElementById('vas-type');
 if (vasBrand && vasType) {
   vasBrand.addEventListener('change', () => {
     if (vasBrand.value === 'Refri 2L') {
-      vasType.value = 'Garrafa';
+      vasType.innerHTML = '<option value="Garrafa" selected>Garrafa</option>';
       vasType.disabled = true;
     } else {
+      vasType.innerHTML = '<option value="Caixa c/ 24">Caixa c/ 24</option><option value="Avulsa">Avulsa</option>';
       vasType.disabled = false;
-      if (vasType.value === 'Garrafa') {
-        vasType.value = 'Caixa c/ 24';
-      }
     }
   });
 }
