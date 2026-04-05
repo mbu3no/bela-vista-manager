@@ -534,7 +534,7 @@ const vasBrand = document.getElementById('vas-brand');
 const vasType = document.getElementById('vas-type');
 if (vasBrand && vasType) {
   vasBrand.addEventListener('change', () => {
-    if (vasBrand.value === 'Refri 2L') {
+    if (vasBrand.value === 'Refri 1L' || vasBrand.value === 'Refri 2L') {
       vasType.innerHTML = '<option value="Garrafa" selected>Garrafa</option>';
       vasType.disabled = true;
     } else {
