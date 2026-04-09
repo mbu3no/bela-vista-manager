@@ -320,6 +320,12 @@ async function deleteClient(id) {
 async function openClient(id, name) {
   selectedClientId = id;
   document.getElementById('modal-client-name').textContent = name;
+  document.getElementById('dividas-table').innerHTML = '';
+  document.getElementById('dividas-empty').style.display = 'none';
+  const bulkBar = document.getElementById('bulk-actions');
+  if (bulkBar) bulkBar.style.display = 'none';
+  const checkAll = document.getElementById('check-all-debts');
+  if (checkAll) checkAll.checked = false;
   document.getElementById('modal-dividas').classList.add('visible');
   document.getElementById('debt-date').value = todayStr();
   loadDividas(id);
