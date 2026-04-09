@@ -163,6 +163,7 @@ document.getElementById('form-produto').addEventListener('submit', async (e) => 
 });
 
 async function deleteProduct(id) {
+  if (!confirm('Remover este produto?')) return;
   await sb.from('products').delete().eq('id', id);
   loadValidade();
 }
@@ -232,6 +233,7 @@ document.getElementById('form-preco').addEventListener('submit', async (e) => {
 });
 
 async function deletePreco(id) {
+  if (!confirm('Remover este preço?')) return;
   await sb.from('pricing').delete().eq('id', id);
   loadPrecos();
 }
@@ -408,6 +410,7 @@ function toggleAllDebts() {
 async function bulkPayDebts() {
   const ids = getSelectedDebtIds();
   if (ids.length === 0) return;
+  if (!confirm(`Marcar ${ids.length} registro${ids.length > 1 ? 's' : ''} como pago?`)) return;
   for (const id of ids) {
     await sb.from('debts').update({ paid: true, paid_at: new Date().toISOString() }).eq('id', id);
   }
@@ -445,12 +448,14 @@ document.getElementById('form-divida').addEventListener('submit', async (e) => {
 });
 
 async function payDebt(id) {
+  if (!confirm('Marcar este registro como pago?')) return;
   await sb.from('debts').update({ paid: true, paid_at: new Date().toISOString() }).eq('id', id);
   loadDividas(selectedClientId);
   loadFiado();
 }
 
 async function deleteDebt(id) {
+  if (!confirm('Remover este registro do fiado?')) return;
   await sb.from('debts').delete().eq('id', id);
   loadDividas(selectedClientId);
   loadFiado();
@@ -575,11 +580,13 @@ document.getElementById('form-vasilhame').addEventListener('submit', async (e) =
 });
 
 async function devolverVasilhame(id) {
+  if (!confirm('Confirmar devolução do vasilhame?')) return;
   await sb.from('vasilhame').update({ returned: true, returned_at: new Date().toISOString() }).eq('id', id);
   loadVasilhame();
 }
 
 async function deleteVasilhame(id) {
+  if (!confirm('Remover este registro do vasilhame?')) return;
   await sb.from('vasilhame').delete().eq('id', id);
   loadVasilhame();
 }
