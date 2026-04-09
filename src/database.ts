@@ -7,6 +7,16 @@ const db = new Database(DB_PATH);
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
+// Força checkpoint ao iniciar para garantir que tudo está no .db principal
+db.pragma("wal_checkpoint(TRUNCATE)");
+
+// Checkpoint automatico a cada 5 minutos
+setInterval(() => {
+  try {
+    db.pragma("wal_checkpoint(PASSIVE)");
+  } catch (_) {}
+}, 5 * 60 * 1000);
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

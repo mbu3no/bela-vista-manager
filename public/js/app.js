@@ -442,6 +442,7 @@ async function loadVasilhame() {
 function renderVasilhame() {
   const search = (document.getElementById('search-vasilhame')?.value || '').toLowerCase();
   const statusFilter = document.getElementById('filter-vasilhame-status')?.value || '';
+  const marcaFilter = document.getElementById('filter-vasilhame-marca')?.value || '';
   const mesFilter = document.getElementById('filter-vasilhame-mes')?.value || '';
   const anoFilter = document.getElementById('filter-vasilhame-ano')?.value || '';
 
@@ -451,9 +452,10 @@ function renderVasilhame() {
     const ano = date ? String(date.getFullYear()) : '';
     const matchSearch = v.customer_name.toLowerCase().includes(search);
     const matchStatus = !statusFilter || v.status === statusFilter;
+    const matchMarca = !marcaFilter || (v.brand || '').includes(marcaFilter);
     const matchMes = !mesFilter || mes === mesFilter;
     const matchAno = !anoFilter || ano === anoFilter;
-    return matchSearch && matchStatus && matchMes && matchAno;
+    return matchSearch && matchStatus && matchMarca && matchMes && matchAno;
   });
 
   const tbody = document.getElementById('vasilhame-table');
@@ -490,6 +492,7 @@ function renderVasilhame() {
 
 document.getElementById('search-vasilhame')?.addEventListener('input', renderVasilhame);
 document.getElementById('filter-vasilhame-status')?.addEventListener('change', renderVasilhame);
+document.getElementById('filter-vasilhame-marca')?.addEventListener('change', renderVasilhame);
 document.getElementById('filter-vasilhame-mes')?.addEventListener('change', renderVasilhame);
 document.getElementById('filter-vasilhame-ano')?.addEventListener('change', renderVasilhame);
 

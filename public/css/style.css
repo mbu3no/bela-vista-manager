@@ -124,6 +124,50 @@ body {
   font-size: 1.3rem;
 }
 
+.sidebar-backup {
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-backup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-soft);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-backup:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: var(--green-bg);
+}
+
+.btn-backup span {
+  font-size: 0.9rem;
+}
+
+.backup-msg {
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 4px;
+  color: var(--green);
+  font-weight: 600;
+}
+
 .sidebar-footer {
   padding: 1rem 1.25rem;
   border-top: 1px solid var(--border-sidebar);
