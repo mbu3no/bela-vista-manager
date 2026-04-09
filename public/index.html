@@ -371,6 +371,15 @@
         <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
       </form>
 
+      <div class="bulk-actions" id="bulk-actions" style="display:none">
+        <label class="bulk-check-label">
+          <input type="checkbox" id="check-all-debts" onchange="toggleAllDebts()"> Selecionar todos
+        </label>
+        <span id="bulk-count"></span>
+        <button class="btn btn-success btn-sm" onclick="bulkPayDebts()">Marcar como Pago</button>
+        <button class="btn btn-danger btn-sm" onclick="bulkDeleteDebts()">Remover selecionados</button>
+      </div>
+
       <table>
         <thead>
           <tr>

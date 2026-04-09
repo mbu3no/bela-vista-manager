@@ -356,13 +356,21 @@ function renderDividas() {
   }
 
   empty.style.display = 'none';
+
+  const pendentes = debts.filter(d => !d.paid);
+  const bulkBar = document.getElementById('bulk-actions');
+  if (bulkBar) {
+    bulkBar.style.display = pendentes.length > 0 ? 'flex' : 'none';
+  }
+
   tbody.innerHTML = debts.map(d => {
     const badge = d.paid ? '<span class="badge badge-pago">Pago</span>' : '<span class="badge badge-pendente">Pendente</span>';
+    const checkbox = !d.paid ? `<input type="checkbox" class="debt-check" data-id="${d.id}" onchange="updateBulkCount()">` : '';
     const actions = d.paid
       ? ''
-      : `<button class="btn btn-success btn-sm" onclick="payDebt(${d.id})">Pagar</button>`;
+      : `<button class="btn btn-success btn-sm" onclick="payDebt(${d.id})">Pago</button>`;
     return `<tr>
-      <td>${d.description}</td>
+      <td>${checkbox} ${d.description}</td>
       <td><strong>${formatMoney(d.amount)}</strong></td>
       <td>${formatDate(d.created_at)}</td>
       <td>${badge}</td>
@@ -372,6 +380,44 @@ function renderDividas() {
       </td>
     </tr>`;
   }).join('');
+}
+
+function getSelectedDebtIds() {
+  return [...document.querySelectorAll('.debt-check:checked')].map(cb => Number(cb.dataset.id));
+}
+
+function updateBulkCount() {
+  const count = getSelectedDebtIds().length;
+  const label = document.getElementById('bulk-count');
+  if (label) label.textContent = count > 0 ? `${count} selecionado${count > 1 ? 's' : ''}` : '';
+}
+
+function toggleAllDebts() {
+  const checkAll = document.getElementById('check-all-debts');
+  const boxes = document.querySelectorAll('.debt-check');
+  boxes.forEach(cb => cb.checked = checkAll.checked);
+  updateBulkCount();
+}
+
+async function bulkPayDebts() {
+  const ids = getSelectedDebtIds();
+  if (ids.length === 0) return;
+  for (const id of ids) {
+    await sb.from('debts').update({ paid: true, paid_at: new Date().toISOString() }).eq('id', id);
+  }
+  loadDividas(selectedClientId);
+  loadFiado();
+}
+
+async function bulkDeleteDebts() {
+  const ids = getSelectedDebtIds();
+  if (ids.length === 0) return;
+  if (!confirm(`Remover ${ids.length} registro${ids.length > 1 ? 's' : ''}?`)) return;
+  for (const id of ids) {
+    await sb.from('debts').delete().eq('id', id);
+  }
+  loadDividas(selectedClientId);
+  loadFiado();
 }
 
 document.getElementById('filter-fiado-mes')?.addEventListener('change', renderDividas);
