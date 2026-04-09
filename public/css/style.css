@@ -678,7 +678,9 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
   border: 1px solid var(--border);
   border-radius: 10px;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .bulk-check-label {
