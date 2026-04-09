@@ -432,7 +432,7 @@ async function loadVasilhame() {
 
   document.getElementById('vasilhame-stats').innerHTML = `
     <div class="stat-card amber"><div class="stat-value">${emprestados}</div><div class="stat-label">Emprestados</div></div>
-    <div class="stat-card green"><div class="stat-value">${devolvidos}</div><div class="stat-label">Devolvidos</div></div>
+    <div class="stat-card green"><div class="stat-value">${devolvidos}</div><div class="stat-label">Entregues</div></div>
     <div class="stat-card neutral"><div class="stat-value">${clientes}</div><div class="stat-label">Clientes com casco</div></div>
   `;
 
@@ -470,10 +470,10 @@ function renderVasilhame() {
   empty.style.display = 'none';
   tbody.innerHTML = filtered.map(v => {
     const badgeClass = v.status === 'emprestado' ? 'badge-emprestado' : 'badge-devolvido';
-    const badgeText = v.status === 'emprestado' ? 'Emprestado' : 'Devolvido';
+    const badgeText = v.status === 'emprestado' ? 'Emprestado' : 'Entregue';
     const actions = v.returned
       ? ''
-      : `<button class="btn btn-success btn-sm" onclick="devolverVasilhame(${v.id})">Devolver</button>`;
+      : `<button class="btn btn-success btn-sm" onclick="devolverVasilhame(${v.id})">Entregue</button>`;
     const phone = v.customer_phone ? `<div style="font-size:0.75rem;color:var(--text-soft)">${v.customer_phone}</div>` : '';
     return `<tr>
       <td><strong>${v.customer_name}</strong>${phone}</td>
