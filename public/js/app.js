@@ -35,6 +35,8 @@ function switchPage(page) {
   if (btn) btn.classList.add('active');
   if (target) target.classList.add('active');
 
+  localStorage.setItem('currentPage', page);
+
   if (page === 'validade') loadValidade();
   if (page === 'precificacao') loadPrecos();
   if (page === 'fiado') loadFiado();
@@ -607,4 +609,5 @@ if (vasBrand && vasType) {
 }
 
 // === INIT ===
-loadValidade();
+const savedPage = localStorage.getItem('currentPage') || 'validade';
+switchPage(savedPage);
