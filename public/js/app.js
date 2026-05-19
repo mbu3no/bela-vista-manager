@@ -25,6 +25,33 @@ function applyPhoneMask(inputId) {
 applyPhoneMask('client-phone');
 applyPhoneMask('vas-phone');
 
+// === CACHE DE RENDER (pra F5 nao parecer vazio) ===
+const RENDER_CACHE_KEYS = {
+  validade: 'validade-stats',
+  fiado: 'fiado-stats',
+  vasilhame: 'vasilhame-stats',
+};
+
+function cacheRender(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  try { localStorage.setItem('render_' + elementId, el.innerHTML); } catch {}
+}
+
+function restoreRender(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  try {
+    const html = localStorage.getItem('render_' + elementId);
+    if (html) el.innerHTML = html;
+  } catch {}
+}
+
+function restoreCachedRenders(page) {
+  const id = RENDER_CACHE_KEYS[page];
+  if (id) restoreRender(id);
+}
+
 // === TEMA ===
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
@@ -102,6 +129,7 @@ function switchPage(page) {
   if (target) target.classList.add('active');
 
   localStorage.setItem('currentPage', page);
+  restoreCachedRenders(page);
 
   if (page === 'validade') loadValidade();
   if (page === 'precificacao') loadPrecos();
@@ -181,6 +209,7 @@ async function loadValidade() {
     <div class="stat-card amber"><div class="stat-value">${alerta}</div><div class="stat-label">Vence em 7 dias</div></div>
     <div class="stat-card red"><div class="stat-value">${vencidos}</div><div class="stat-label">Vencidos</div></div>
   `;
+  cacheRender('validade-stats');
 
   renderProducts();
 }
@@ -338,6 +367,7 @@ async function loadFiado() {
     <div class="stat-card red"><div class="stat-value">${formatMoney(totalDevido)}</div><div class="stat-label">Total a receber</div></div>
     <div class="stat-card green"><div class="stat-value">${formatMoney(totalPago)}</div><div class="stat-label">Total recebido</div></div>
   `;
+  cacheRender('fiado-stats');
 
   renderClients();
 }
@@ -636,6 +666,7 @@ async function loadVasilhame() {
     <div class="stat-card green"><div class="stat-value">${devolvidos}</div><div class="stat-label">Entregues</div></div>
     <div class="stat-card neutral"><div class="stat-value">${clientes}</div><div class="stat-label">Clientes com casco</div></div>
   `;
+  cacheRender('vasilhame-stats');
 
   renderVasilhame();
 }

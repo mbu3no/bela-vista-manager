@@ -119,6 +119,11 @@ body, .sidebar, .modal, .form-card, .table-card, .stat-card, .client-card, .empt
   margin-bottom: 0.5rem;
 }
 
+[data-theme="dark"] .sidebar-logo,
+[data-theme="dark"] .mobile-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.05) saturate(1.2);
+}
+
 .sidebar-sub {
   font-size: 0.62rem;
   color: var(--text-soft);
