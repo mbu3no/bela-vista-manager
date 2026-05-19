@@ -51,8 +51,13 @@
   <!-- === VALIDADE === -->
   <div class="page" id="page-validade">
     <div class="page-header">
-      <h1 class="page-title">Controle de Validade</h1>
-      <p class="page-desc">Cadastre produtos e acompanhe as datas de vencimento.</p>
+      <div class="page-header-text">
+        <h1 class="page-title">Controle de Validade</h1>
+        <p class="page-desc">Cadastre produtos e acompanhe as datas de vencimento.</p>
+      </div>
+      <button class="btn-refresh" onclick="refresh(this, loadValidade)" aria-label="Atualizar" title="Atualizar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
     </div>
 
     <div class="stats-grid" id="validade-stats"></div>
@@ -124,8 +129,13 @@
   <!-- === PRECIFICAÇÃO === -->
   <div class="page" id="page-precificacao">
     <div class="page-header">
-      <h1 class="page-title">Calculadora de Preço</h1>
-      <p class="page-desc">Calcule o preço de venda com base no custo e na margem desejada.</p>
+      <div class="page-header-text">
+        <h1 class="page-title">Calculadora de Preço</h1>
+        <p class="page-desc">Calcule o preço de venda com base no custo e na margem desejada.</p>
+      </div>
+      <button class="btn-refresh" onclick="refresh(this, loadPrecos)" aria-label="Atualizar" title="Atualizar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
     </div>
 
     <div class="form-card">
@@ -196,8 +206,13 @@
   <!-- === FIADO === -->
   <div class="page" id="page-fiado">
     <div class="page-header">
-      <h1 class="page-title">Caderneta</h1>
-      <p class="page-desc">Gerencie os clientes e as compras pendentes.</p>
+      <div class="page-header-text">
+        <h1 class="page-title">Caderneta</h1>
+        <p class="page-desc">Gerencie os clientes e as compras pendentes.</p>
+      </div>
+      <button class="btn-refresh" onclick="refresh(this, loadFiado)" aria-label="Atualizar" title="Atualizar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
     </div>
 
     <div class="stats-grid" id="fiado-stats"></div>
@@ -219,24 +234,6 @@
 
     <div class="table-filters" style="margin-bottom:1rem">
       <input type="text" id="search-fiado" class="search-input" placeholder="Buscar cliente...">
-      <select id="filter-fiado-mes" class="filter-select">
-        <option value="">Todos os meses</option>
-        <option value="01">Janeiro</option>
-        <option value="02">Fevereiro</option>
-        <option value="03">Março</option>
-        <option value="04">Abril</option>
-        <option value="05">Maio</option>
-        <option value="06">Junho</option>
-        <option value="07">Julho</option>
-        <option value="08">Agosto</option>
-        <option value="09">Setembro</option>
-        <option value="10">Outubro</option>
-        <option value="11">Novembro</option>
-        <option value="12">Dezembro</option>
-      </select>
-      <select id="filter-fiado-ano" class="filter-select">
-        <option value="">Todos os anos</option>
-      </select>
     </div>
 
     <div class="clients-grid" id="clients-grid"></div>
@@ -251,8 +248,13 @@
   <!-- === VASILHAME === -->
   <div class="page" id="page-vasilhame">
     <div class="page-header">
-      <h1 class="page-title">Controle de Vasilhame</h1>
-      <p class="page-desc">Gerencie os empréstimos de cascos de cerveja e refrigerante retornável.</p>
+      <div class="page-header-text">
+        <h1 class="page-title">Controle de Vasilhame</h1>
+        <p class="page-desc">Gerencie os empréstimos de cascos de cerveja e refrigerante retornável.</p>
+      </div>
+      <button class="btn-refresh" onclick="refresh(this, loadVasilhame)" aria-label="Atualizar" title="Atualizar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
     </div>
 
     <div class="stats-grid" id="vasilhame-stats"></div>
@@ -395,10 +397,41 @@
         <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
       </form>
 
+      <div class="debt-filters">
+        <select id="filter-fiado-mes" class="filter-select">
+          <option value="">Todos os meses</option>
+          <option value="01">Janeiro</option>
+          <option value="02">Fevereiro</option>
+          <option value="03">Março</option>
+          <option value="04">Abril</option>
+          <option value="05">Maio</option>
+          <option value="06">Junho</option>
+          <option value="07">Julho</option>
+          <option value="08">Agosto</option>
+          <option value="09">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+        <select id="filter-fiado-ano" class="filter-select">
+          <option value="">Todos os anos</option>
+        </select>
+        <div class="range-group">
+          <label>De</label>
+          <input type="date" id="filter-fiado-de" class="filter-date">
+        </div>
+        <div class="range-group">
+          <label>Até</label>
+          <input type="date" id="filter-fiado-ate" class="filter-date">
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" id="clear-debt-filters">Limpar</button>
+      </div>
+
       <div class="bulk-actions" id="bulk-actions" style="display:none">
         <label class="bulk-check-label">
           <input type="checkbox" id="check-all-debts" onchange="toggleAllDebts()"> Selecionar todos
         </label>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="selectAllPending()">Pendentes</button>
         <div class="bulk-info">
           <span id="bulk-count" class="bulk-count"></span>
           <span id="bulk-total" class="bulk-total"></span>

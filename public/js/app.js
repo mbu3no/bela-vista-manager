@@ -25,6 +25,17 @@ function applyPhoneMask(inputId) {
 applyPhoneMask('client-phone');
 applyPhoneMask('vas-phone');
 
+// === REFRESH HELPER ===
+async function refresh(button, loadFn) {
+  if (!button || !loadFn) return;
+  button.classList.add('spinning');
+  try {
+    await loadFn();
+  } finally {
+    setTimeout(() => button.classList.remove('spinning'), 600);
+  }
+}
+
 // === MODAL DE CONFIRMACAO ===
 function confirmAction(message, options = {}) {
   return new Promise((resolve) => {
@@ -374,6 +385,10 @@ async function openClient(id, name) {
   if (bulkBar) bulkBar.style.display = 'none';
   const checkAll = document.getElementById('check-all-debts');
   if (checkAll) checkAll.checked = false;
+  ['filter-fiado-mes', 'filter-fiado-ano', 'filter-fiado-de', 'filter-fiado-ate'].forEach(fid => {
+    const el = document.getElementById(fid);
+    if (el) el.value = '';
+  });
   document.getElementById('modal-dividas').classList.add('visible');
   document.getElementById('debt-date').value = todayStr();
   loadDividas(id);
@@ -386,19 +401,34 @@ async function loadDividas(clientId) {
   renderDividas();
 }
 
-function renderDividas() {
-  const mesFilter = document.getElementById('filter-fiado-mes')?.value || '';
-  const anoFilter = document.getElementById('filter-fiado-ano')?.value || '';
+function getDebtFilterState() {
+  return {
+    mes: document.getElementById('filter-fiado-mes')?.value || '',
+    ano: document.getElementById('filter-fiado-ano')?.value || '',
+    de: document.getElementById('filter-fiado-de')?.value || '',
+    ate: document.getElementById('filter-fiado-ate')?.value || '',
+  };
+}
 
-  let debts = allDebtsForFilter.filter(d => {
+function applyDebtFilters(debts) {
+  const f = getDebtFilterState();
+  const deTs = f.de ? new Date(f.de + 'T00:00:00').getTime() : null;
+  const ateTs = f.ate ? new Date(f.ate + 'T23:59:59').getTime() : null;
+  return debts.filter(d => {
     const date = d.created_at ? new Date(d.created_at) : null;
     if (!date) return true;
     const mes = String(date.getMonth() + 1).padStart(2, '0');
     const ano = String(date.getFullYear());
-    const matchMes = !mesFilter || mes === mesFilter;
-    const matchAno = !anoFilter || ano === anoFilter;
-    return matchMes && matchAno;
+    if (f.mes && mes !== f.mes) return false;
+    if (f.ano && ano !== f.ano) return false;
+    if (deTs !== null && date.getTime() < deTs) return false;
+    if (ateTs !== null && date.getTime() > ateTs) return false;
+    return true;
   });
+}
+
+function renderDividas() {
+  let debts = applyDebtFilters(allDebtsForFilter);
 
   const tbody = document.getElementById('dividas-table');
   const empty = document.getElementById('dividas-empty');
@@ -452,18 +482,24 @@ function getSelectedDebtTotal() {
 }
 
 function getPendingFilteredTotal() {
-  const mesFilter = document.getElementById('filter-fiado-mes')?.value || '';
-  const anoFilter = document.getElementById('filter-fiado-ano')?.value || '';
-  return allDebtsForFilter
-    .filter(d => !d.paid)
-    .filter(d => {
-      const date = d.created_at ? new Date(d.created_at) : null;
-      if (!date) return true;
-      const mes = String(date.getMonth() + 1).padStart(2, '0');
-      const ano = String(date.getFullYear());
-      return (!mesFilter || mes === mesFilter) && (!anoFilter || ano === anoFilter);
-    })
+  return applyDebtFilters(allDebtsForFilter.filter(d => !d.paid))
     .reduce((sum, d) => sum + Number(d.amount || 0), 0);
+}
+
+function selectAllPending() {
+  document.querySelectorAll('.debt-check').forEach(cb => cb.checked = true);
+  const checkAll = document.getElementById('check-all-debts');
+  if (checkAll) checkAll.checked = true;
+  updateBulkCount();
+}
+
+function clearDebtFilters() {
+  const ids = ['filter-fiado-mes', 'filter-fiado-ano', 'filter-fiado-de', 'filter-fiado-ate'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderDividas();
 }
 
 function updateBulkCount() {
@@ -518,6 +554,9 @@ async function bulkDeleteDebts() {
 
 document.getElementById('filter-fiado-mes')?.addEventListener('change', renderDividas);
 document.getElementById('filter-fiado-ano')?.addEventListener('change', renderDividas);
+document.getElementById('filter-fiado-de')?.addEventListener('change', renderDividas);
+document.getElementById('filter-fiado-ate')?.addEventListener('change', renderDividas);
+document.getElementById('clear-debt-filters')?.addEventListener('click', clearDebtFilters);
 
 document.getElementById('form-divida').addEventListener('submit', async (e) => {
   e.preventDefault();
