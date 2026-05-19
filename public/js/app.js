@@ -161,6 +161,13 @@ function formatMoney(value) {
   return 'R$ ' + Number(value).toFixed(2).replace('.', ',');
 }
 
+function normalizeText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Mn}/gu, '');
+}
+
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -215,12 +222,12 @@ async function loadValidade() {
 }
 
 function renderProducts() {
-  const search = (document.getElementById('search-validade')?.value || '').toLowerCase();
+  const search = normalizeText(document.getElementById('search-validade')?.value);
   const statusFilter = document.getElementById('filter-validade-status')?.value || '';
   const mesFilter = document.getElementById('filter-validade-mes')?.value || '';
 
   let filtered = allProducts.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(search);
+    const matchSearch = !search || normalizeText(p.name).includes(search);
     const matchStatus = !statusFilter || p.status === statusFilter;
     const matchMes = !mesFilter || p.expiry_date.slice(5, 7) === mesFilter;
     return matchSearch && matchStatus && matchMes;
@@ -280,10 +287,10 @@ async function loadPrecos() {
 }
 
 function renderPrecos() {
-  const search = (document.getElementById('search-preco')?.value || '').toLowerCase();
+  const search = normalizeText(document.getElementById('search-preco')?.value);
 
   let filtered = allPrecos.filter(p =>
-    p.product_name.toLowerCase().includes(search)
+    !search || normalizeText(p.product_name).includes(search)
   );
 
   const tbody = document.getElementById('preco-table');
@@ -373,11 +380,15 @@ async function loadFiado() {
 }
 
 function renderClients() {
-  const search = (document.getElementById('search-fiado')?.value || '').toLowerCase();
+  const search = normalizeText(document.getElementById('search-fiado')?.value);
+  const phoneDigits = (document.getElementById('search-fiado')?.value || '').replace(/\D/g, '');
 
-  let filtered = allClients.filter(c =>
-    c.name.toLowerCase().includes(search) || (c.phone || '').includes(search)
-  );
+  let filtered = allClients.filter(c => {
+    if (!search) return true;
+    if (normalizeText(c.name).includes(search)) return true;
+    if (phoneDigits && (c.phone || '').replace(/\D/g, '').includes(phoneDigits)) return true;
+    return false;
+  });
 
   const grid = document.getElementById('clients-grid');
   const empty = document.getElementById('fiado-empty');
@@ -672,7 +683,7 @@ async function loadVasilhame() {
 }
 
 function renderVasilhame() {
-  const search = (document.getElementById('search-vasilhame')?.value || '').toLowerCase();
+  const search = normalizeText(document.getElementById('search-vasilhame')?.value);
   const statusFilter = document.getElementById('filter-vasilhame-status')?.value || '';
   const marcaFilter = document.getElementById('filter-vasilhame-marca')?.value || '';
   const mesFilter = document.getElementById('filter-vasilhame-mes')?.value || '';
@@ -682,7 +693,7 @@ function renderVasilhame() {
     const date = v.created_at ? new Date(v.created_at) : null;
     const mes = date ? String(date.getMonth() + 1).padStart(2, '0') : '';
     const ano = date ? String(date.getFullYear()) : '';
-    const matchSearch = v.customer_name.toLowerCase().includes(search);
+    const matchSearch = !search || normalizeText(v.customer_name).includes(search);
     const matchStatus = !statusFilter || v.status === statusFilter;
     const matchMarca = !marcaFilter || (v.brand || '').includes(marcaFilter);
     const matchMes = !mesFilter || mes === mesFilter;
