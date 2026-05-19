@@ -25,6 +25,17 @@ function applyPhoneMask(inputId) {
 applyPhoneMask('client-phone');
 applyPhoneMask('vas-phone');
 
+// === TEMA ===
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
 // === REFRESH HELPER ===
 async function refresh(button, loadFn) {
   if (!button || !loadFn) return;
@@ -109,8 +120,13 @@ document.querySelectorAll('.nav-item').forEach(item => {
 
 function formatDate(dateStr) {
   if (!dateStr) return '-';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('pt-BR');
+  const str = String(dateStr);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+    const [y, m, d] = str.split('-');
+    return `${d}/${m}/${y}`;
+  }
+  const date = new Date(str);
+  return date.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 }
 
 function formatMoney(value) {
