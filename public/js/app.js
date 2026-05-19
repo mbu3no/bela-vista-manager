@@ -199,7 +199,7 @@ function renderProducts() {
       <td>${formatDate(p.expiry_date)}</td>
       <td>${p.quantity}</td>
       <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Remover</button></td>
+      <td class="actions-cell"><div class="row-actions"><button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Remover</button></div></td>
     </tr>`;
   }).join('');
 }
@@ -259,7 +259,7 @@ function renderPrecos() {
       <td>${p.markup_percent}%</td>
       <td><strong>${formatMoney(p.sell_price)}</strong></td>
       <td style="color:var(--green)">${formatMoney(lucro)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deletePreco(${p.id})">Remover</button></td>
+      <td class="actions-cell"><div class="row-actions"><button class="btn btn-danger btn-sm" onclick="deletePreco(${p.id})">Remover</button></div></td>
     </tr>`;
   }).join('');
 }
@@ -460,9 +460,11 @@ function renderDividas() {
       <td><strong>${formatMoney(d.amount)}</strong></td>
       <td>${formatDate(d.created_at)}</td>
       <td>${badge}</td>
-      <td>
-        ${actions}
-        <button class="btn btn-danger btn-sm" onclick="deleteDebt(${d.id})">Remover</button>
+      <td class="actions-cell">
+        <div class="row-actions">
+          ${actions}
+          <button class="btn btn-danger btn-sm" onclick="deleteDebt(${d.id})">Remover</button>
+        </div>
       </td>
     </tr>`;
   }).join('');
@@ -665,9 +667,11 @@ function renderVasilhame() {
       <td>${v.quantity}</td>
       <td>${formatDate(v.created_at)}</td>
       <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-      <td>
-        ${actions}
-        <button class="btn btn-danger btn-sm" onclick="deleteVasilhame(${v.id})">Remover</button>
+      <td class="actions-cell">
+        <div class="row-actions">
+          ${actions}
+          <button class="btn btn-danger btn-sm" onclick="deleteVasilhame(${v.id})">Remover</button>
+        </div>
       </td>
     </tr>`;
   }).join('');
