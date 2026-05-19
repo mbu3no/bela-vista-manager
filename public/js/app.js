@@ -25,6 +25,50 @@ function applyPhoneMask(inputId) {
 applyPhoneMask('client-phone');
 applyPhoneMask('vas-phone');
 
+// === MODAL DE CONFIRMACAO ===
+function confirmAction(message, options = {}) {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById('modal-confirm');
+    const titleEl = document.getElementById('confirm-title');
+    const messageEl = document.getElementById('confirm-message');
+    const iconEl = document.getElementById('confirm-icon');
+    const okBtn = document.getElementById('confirm-ok');
+    const cancelBtn = document.getElementById('confirm-cancel');
+
+    titleEl.textContent = options.title || 'Confirmar ação?';
+    messageEl.textContent = message;
+    okBtn.textContent = options.okLabel || 'Confirmar';
+    cancelBtn.textContent = options.cancelLabel || 'Cancelar';
+
+    iconEl.classList.toggle('danger', options.danger === true);
+    okBtn.classList.toggle('btn-danger', options.danger === true);
+    okBtn.classList.toggle('btn-primary', options.danger !== true);
+
+    overlay.classList.add('visible');
+
+    const cleanup = (result) => {
+      overlay.classList.remove('visible');
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+      overlay.removeEventListener('click', onOverlay);
+      document.removeEventListener('keydown', onKey);
+      resolve(result);
+    };
+    const onOk = () => cleanup(true);
+    const onCancel = () => cleanup(false);
+    const onOverlay = (e) => { if (e.target === overlay) cleanup(false); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') cleanup(false);
+      if (e.key === 'Enter') cleanup(true);
+    };
+
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+    overlay.addEventListener('click', onOverlay);
+    document.addEventListener('keydown', onKey);
+  });
+}
+
 // === NAVEGACAO ===
 function switchPage(page) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -165,7 +209,7 @@ document.getElementById('form-produto').addEventListener('submit', async (e) => 
 });
 
 async function deleteProduct(id) {
-  if (!confirm('Remover este produto?')) return;
+  if (!await confirmAction('Remover este produto?', { danger: true, okLabel: 'Remover' })) return;
   await sb.from('products').delete().eq('id', id);
   loadValidade();
 }
@@ -235,7 +279,7 @@ document.getElementById('form-preco').addEventListener('submit', async (e) => {
 });
 
 async function deletePreco(id) {
-  if (!confirm('Remover este preço?')) return;
+  if (!await confirmAction('Remover este preço?', { danger: true, okLabel: 'Remover' })) return;
   await sb.from('pricing').delete().eq('id', id);
   loadPrecos();
 }
@@ -315,7 +359,7 @@ document.getElementById('form-cliente').addEventListener('submit', async (e) => 
 });
 
 async function deleteClient(id) {
-  if (!confirm('Remover este cliente e todas as dividas dele?')) return;
+  if (!await confirmAction('Remover este cliente e todas as anotações dele?', { danger: true, okLabel: 'Remover' })) return;
   await sb.from('debts').delete().eq('customer_id', id);
   await sb.from('customers').delete().eq('id', id);
   loadFiado();
@@ -372,6 +416,8 @@ function renderDividas() {
   if (bulkBar) {
     bulkBar.style.display = pendentes.length > 0 ? 'flex' : 'none';
   }
+  const checkAll = document.getElementById('check-all-debts');
+  if (checkAll) checkAll.checked = false;
 
   tbody.innerHTML = debts.map(d => {
     const badge = d.paid ? '<span class="badge badge-pago">Pago</span>' : '<span class="badge badge-pendente">Pendente</span>';
@@ -390,16 +436,51 @@ function renderDividas() {
       </td>
     </tr>`;
   }).join('');
+
+  updateBulkCount();
 }
 
 function getSelectedDebtIds() {
   return [...document.querySelectorAll('.debt-check:checked')].map(cb => Number(cb.dataset.id));
 }
 
+function getSelectedDebtTotal() {
+  const ids = new Set(getSelectedDebtIds());
+  return allDebtsForFilter
+    .filter(d => ids.has(d.id))
+    .reduce((sum, d) => sum + Number(d.amount || 0), 0);
+}
+
+function getPendingFilteredTotal() {
+  const mesFilter = document.getElementById('filter-fiado-mes')?.value || '';
+  const anoFilter = document.getElementById('filter-fiado-ano')?.value || '';
+  return allDebtsForFilter
+    .filter(d => !d.paid)
+    .filter(d => {
+      const date = d.created_at ? new Date(d.created_at) : null;
+      if (!date) return true;
+      const mes = String(date.getMonth() + 1).padStart(2, '0');
+      const ano = String(date.getFullYear());
+      return (!mesFilter || mes === mesFilter) && (!anoFilter || ano === anoFilter);
+    })
+    .reduce((sum, d) => sum + Number(d.amount || 0), 0);
+}
+
 function updateBulkCount() {
   const count = getSelectedDebtIds().length;
+  const total = getSelectedDebtTotal();
+  const pending = getPendingFilteredTotal();
+  const remaining = pending - total;
+
   const label = document.getElementById('bulk-count');
+  const totalEl = document.getElementById('bulk-total');
+  const remainEl = document.getElementById('bulk-remaining');
+
   if (label) label.textContent = count > 0 ? `${count} selecionado${count > 1 ? 's' : ''}` : '';
+  if (totalEl) totalEl.textContent = count > 0 ? formatMoney(total) : '';
+  if (remainEl) {
+    remainEl.textContent = count > 0 ? `Saldo após ação: ${formatMoney(remaining)}` : '';
+  }
 }
 
 function toggleAllDebts() {
@@ -412,7 +493,9 @@ function toggleAllDebts() {
 async function bulkPayDebts() {
   const ids = getSelectedDebtIds();
   if (ids.length === 0) return;
-  if (!confirm(`Marcar ${ids.length} registro${ids.length > 1 ? 's' : ''} como pago?`)) return;
+  const total = getSelectedDebtTotal();
+  const plural = ids.length > 1 ? 's' : '';
+  if (!await confirmAction(`Marcar ${ids.length} registro${plural} como pago, no total de ${formatMoney(total)}?`, { okLabel: 'Marcar como pago' })) return;
   for (const id of ids) {
     await sb.from('debts').update({ paid: true, paid_at: new Date().toISOString() }).eq('id', id);
   }
@@ -423,7 +506,9 @@ async function bulkPayDebts() {
 async function bulkDeleteDebts() {
   const ids = getSelectedDebtIds();
   if (ids.length === 0) return;
-  if (!confirm(`Remover ${ids.length} registro${ids.length > 1 ? 's' : ''}?`)) return;
+  const total = getSelectedDebtTotal();
+  const plural = ids.length > 1 ? 's' : '';
+  if (!await confirmAction(`Remover ${ids.length} registro${plural} (${formatMoney(total)})?`, { danger: true, okLabel: 'Remover' })) return;
   for (const id of ids) {
     await sb.from('debts').delete().eq('id', id);
   }
@@ -450,14 +535,14 @@ document.getElementById('form-divida').addEventListener('submit', async (e) => {
 });
 
 async function payDebt(id) {
-  if (!confirm('Marcar este registro como pago?')) return;
+  if (!await confirmAction('Marcar este registro como pago?', { okLabel: 'Marcar como pago' })) return;
   await sb.from('debts').update({ paid: true, paid_at: new Date().toISOString() }).eq('id', id);
   loadDividas(selectedClientId);
   loadFiado();
 }
 
 async function deleteDebt(id) {
-  if (!confirm('Remover este registro do fiado?')) return;
+  if (!await confirmAction('Remover este registro da caderneta?', { danger: true, okLabel: 'Remover' })) return;
   await sb.from('debts').delete().eq('id', id);
   loadDividas(selectedClientId);
   loadFiado();
@@ -582,13 +667,13 @@ document.getElementById('form-vasilhame').addEventListener('submit', async (e) =
 });
 
 async function devolverVasilhame(id) {
-  if (!confirm('Confirmar devolução do vasilhame?')) return;
+  if (!await confirmAction('Confirmar devolução do vasilhame?', { okLabel: 'Confirmar devolução' })) return;
   await sb.from('vasilhame').update({ returned: true, returned_at: new Date().toISOString() }).eq('id', id);
   loadVasilhame();
 }
 
 async function deleteVasilhame(id) {
-  if (!confirm('Remover este registro do vasilhame?')) return;
+  if (!await confirmAction('Remover este registro do vasilhame?', { danger: true, okLabel: 'Remover' })) return;
   await sb.from('vasilhame').delete().eq('id', id);
   loadVasilhame();
 }
