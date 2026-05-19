@@ -486,8 +486,39 @@ body {
   overflow: visible;
 }
 
+.modal-body table { table-layout: auto; width: 100%; }
+
 .modal-body table th {
   position: static;
+  padding: 0.65rem 0.7rem;
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+}
+
+.modal-body table td {
+  padding: 0.7rem;
+  font-size: 0.82rem;
+}
+
+.modal-body table td:nth-child(2),
+.modal-body table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+.modal-body td.actions-cell {
+  padding: 0.5rem 0.6rem;
+}
+
+.modal-body .row-actions {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+}
+
+.modal-body .row-actions .btn {
+  padding: 0.32rem 0.6rem;
+  font-size: 0.7rem;
+  justify-content: center;
 }
 
 .table-header {
@@ -760,7 +791,7 @@ td.actions-cell {
 .modal {
   background: var(--bg-card);
   border-radius: 18px;
-  max-width: 640px;
+  max-width: 720px;
   width: 100%;
   max-height: 85vh;
   display: flex;
