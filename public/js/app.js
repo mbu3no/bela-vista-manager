@@ -694,5 +694,5 @@ if (vasBrand && vasType) {
 }
 
 // === INIT ===
-const savedPage = localStorage.getItem('currentPage') || 'validade';
+const savedPage = localStorage.getItem('currentPage') || 'fiado';
 switchPage(savedPage);

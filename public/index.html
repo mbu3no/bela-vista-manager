@@ -17,17 +17,25 @@
   </div>
 
   <nav class="sidebar-nav">
-    <button class="nav-item" data-page="validade">
-      <span class="nav-icon">&#128197;</span> Validade
-    </button>
-    <button class="nav-item" data-page="precificacao">
-      <span class="nav-icon">&#128178;</span> Precificação
-    </button>
     <button class="nav-item" data-page="fiado">
-      <span class="nav-icon">&#128221;</span> Caderneta
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h13"/><path d="M9 8h6"/></svg>
+      </span> Caderneta
     </button>
     <button class="nav-item" data-page="vasilhame">
-      <span class="nav-icon">&#127866;</span> Vasilhame
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3l1 2v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V8l1-2z"/><path d="M9 11h6"/></svg>
+      </span> Vasilhame
+    </button>
+    <button class="nav-item" data-page="validade">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+      </span> Validade
+    </button>
+    <button class="nav-item" data-page="precificacao">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M16 8H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8"/></svg>
+      </span> Precificação
     </button>
   </nav>
 
@@ -90,20 +98,24 @@
           </select>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Validade</th>
-            <th>Qtd</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="validade-table"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Validade</th>
+              <th>Qtd</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="validade-table"></tbody>
+        </table>
+      </div>
       <div class="empty" id="validade-empty" style="display:none">
-        <div class="empty-icon">&#128230;</div>
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        </div>
         <div class="empty-text">Nenhum produto cadastrado ainda.</div>
       </div>
     </div>
@@ -157,21 +169,25 @@
           <input type="text" id="search-preco" class="search-input" placeholder="Buscar produto...">
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Custo</th>
-            <th>Margem</th>
-            <th>Preço Venda</th>
-            <th>Lucro</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="preco-table"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Custo</th>
+              <th>Margem</th>
+              <th>Preço Venda</th>
+              <th>Lucro</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="preco-table"></tbody>
+        </table>
+      </div>
       <div class="empty" id="preco-empty" style="display:none">
-        <div class="empty-icon">&#128200;</div>
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M16 8H10a2.5 2.5 0 0 0 0 5h4a2.5 2.5 0 0 1 0 5H8"/></svg>
+        </div>
         <div class="empty-text">Nenhum cálculo salvo ainda.</div>
       </div>
     </div>
@@ -225,7 +241,9 @@
 
     <div class="clients-grid" id="clients-grid"></div>
     <div class="empty" id="fiado-empty" style="display:none">
-      <div class="empty-icon">&#128100;</div>
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h13"/><path d="M9 8h6"/></svg>
+      </div>
       <div class="empty-text">Nenhum cliente cadastrado ainda.</div>
     </div>
   </div>
@@ -326,22 +344,26 @@
           </select>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Cliente</th>
-            <th>Marca</th>
-            <th>Tipo</th>
-            <th>Qtd</th>
-            <th>Data</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="vasilhame-table"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Marca</th>
+              <th>Tipo</th>
+              <th>Qtd</th>
+              <th>Data</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="vasilhame-table"></tbody>
+        </table>
+      </div>
       <div class="empty" id="vasilhame-empty" style="display:none">
-        <div class="empty-icon">&#127866;</div>
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3l1 2v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V8l1-2z"/><path d="M9 11h6"/></svg>
+        </div>
         <div class="empty-text">Nenhum empréstimo registrado ainda.</div>
       </div>
     </div>
@@ -388,21 +410,25 @@
         </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="dividas-table"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="dividas-table"></tbody>
+        </table>
+      </div>
       <div class="empty" id="dividas-empty" style="display:none">
-        <div class="empty-icon">&#9989;</div>
-        <div class="empty-text">Nenhuma dívida registrada.</div>
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+        </div>
+        <div class="empty-text">Nenhuma anotação registrada.</div>
       </div>
     </div>
   </div>
@@ -425,7 +451,7 @@
 
 <script>
   (function () {
-    var page = localStorage.getItem('currentPage') || 'validade';
+    var page = localStorage.getItem('currentPage') || 'fiado';
     var btn = document.querySelector('.nav-item[data-page="' + page + '"]');
     var pg = document.getElementById('page-' + page);
     if (btn) btn.classList.add('active');

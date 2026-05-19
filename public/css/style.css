@@ -119,9 +119,23 @@ body {
 }
 
 .nav-icon {
-  width: 26px;
-  text-align: center;
-  font-size: 1.3rem;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+}
+
+.nav-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
 }
 
 .sidebar-backup {
@@ -201,12 +215,13 @@ body {
 }
 
 .page-title {
-  font-family: var(--font-body);
-  font-size: 1.65rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
   color: var(--text);
-  margin-bottom: 0.3rem;
-  letter-spacing: -0.3px;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
 }
 
 .page-desc {
@@ -257,6 +272,8 @@ body {
   font-weight: 800;
   line-height: 1;
   margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 .stat-card.green .stat-value { color: var(--green); }
@@ -418,6 +435,11 @@ body {
   animation: fadeUp 0.35s ease 0.15s both;
 }
 
+.table-card .table-scroll {
+  max-height: 65vh;
+  overflow: auto;
+}
+
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -477,45 +499,71 @@ table { width: 100%; border-collapse: collapse; }
 
 th {
   text-align: left;
-  padding: 0.7rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   font-size: 0.66rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--text-soft);
-  background: var(--bg);
+  background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
+th:last-child { border-right: none; }
+
 td {
-  padding: 0.8rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   font-size: 0.87rem;
   border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   vertical-align: middle;
 }
 
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(45, 107, 45, 0.015); }
+td:last-child { border-right: none; }
+
+tbody tr { transition: background-color 0.15s ease; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: rgba(45, 107, 45, 0.025); }
 
 /* ========== BADGES ========== */
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   padding: 0.22rem 0.65rem;
-  border-radius: 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
-.badge-ok { background: var(--green-bg); color: var(--green); }
-.badge-alerta { background: var(--amber-bg); color: var(--amber); }
-.badge-vencido { background: var(--red-bg); color: var(--red); }
-.badge-pago { background: var(--green-bg); color: var(--green); }
-.badge-pendente { background: var(--amber-bg); color: var(--amber); }
-.badge-emprestado { background: var(--amber-bg); color: var(--amber); }
-.badge-devolvido { background: var(--green-bg); color: var(--green); }
+.badge-ok,
+.badge-pago,
+.badge-devolvido {
+  background: var(--green-bg);
+  color: var(--green);
+  border-color: rgba(45, 107, 45, 0.18);
+}
+
+.badge-alerta,
+.badge-pendente,
+.badge-emprestado {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border-color: rgba(212, 146, 10, 0.22);
+}
+
+.badge-vencido {
+  background: var(--red-bg);
+  color: var(--red);
+  border-color: rgba(196, 30, 30, 0.22);
+}
 
 /* ========== PRICING ========== */
 .price-result {
@@ -810,9 +858,39 @@ tr:hover td { background: rgba(45, 107, 45, 0.015); }
 }
 
 /* ========== EMPTY ========== */
-.empty { text-align: center; padding: 3rem 1rem; color: var(--text-soft); }
-.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.3; }
-.empty-text { font-size: 0.88rem; font-weight: 500; }
+.empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-soft);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-sidebar);
+}
+
+.empty-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.empty-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  max-width: 320px;
+  margin: 0 auto;
+}
 
 /* ========== PAGES ========== */
 .page { display: none; }
